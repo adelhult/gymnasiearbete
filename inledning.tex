@@ -1,0 +1,24 @@
+Vardagliga handlingar som att tända lampor, spela musik och ställa väckar\-klockan utförs allt oftare med hjälp av rösten \cite{voicebot}. Ett relativt nytt sätt för människor att utföra röstinteraktioner är med en så kallad smart högtalare, det vill säga en högtalare utrustad med mikrofon, dator och nätverksanslutning. Yttras en speciell fras (exempelvis ”Hey Google” eller ”Alexa”) börjar enheten lyssna och användaren kan då kommendera den smarta högtalaren genom att helt enkelt tala till den. Detta arbete handlar om konstruktionen av just en sådan högtalare.
+
+\subsection{Bakgrund}
+Marknaden för smarta högtalare är stor och expanderar i en enorm takt. En årlig undersökning \cite{edison_npr2018} med drygt tusen tillfrågade uppskattar att 21\% av vuxna amerikaner ägde en smart högtalare i december 2018. Antalet smarta högtalare i landets hushåll har även ökade med hela 78\% från föregående år, totalt rör det sig omkring 120 miljoner enheter bara i USA. Denna produktadoption är snabb och stor även i jämförelse med andra produkter som exempelvis smarttelefoner. Den årliga tillväxten de första fem åren smarta högtalare varit på marknaden är mer än dubbel så stor som den var för smarttelefoner \cite{capgemini}.
+
+Konsumenter har dock enbart ett fåtal alternativ att välja mellan, marknaden domineras utav de två privata aktörerna Amazon och Google, se figur \ref{fig:speaker_market_share}. 
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}
+        \pie[text=legend, radius=2, color={orange!80, blue!60, green!70}]{71.9/ Amazon , 18.4/ Google , 9.7/ Övriga}
+    \end{tikzpicture}
+    \caption{\small Procentfördelning av enheterna i USA år 2017 \cite{voicebot}.}
+    \label{fig:speaker_market_share}    
+\end{figure}
+Gemensamt för alla röst-produkter från Amazon och Google (men även Apple och Sonos) är att de är byggda proprietär programvara, källkoden är delvis eller helt stängd. En av nackdelen med stängd kod är att allmänheten saknar insyn i vad mjukvaran faktiskt gör och vilken data som enheten sparar. Detta oroar många potentiella konsumenter, sexton procent av de som inte äger en enhet uppger att oro kring integritet är en anledning till att de ännu inte köpt någon smart högtalare \cite{voicebot}. LITAR INTE PÅ FÖRETAGEN. SKRIV OM GOOGLE/NEST skandalen.
+
+En fördel med en produkt som är baserad öppen mjukvara istället för proprietär sådan är också att användaren tillåts vara mer flexibel. Systemen kan ändras helt efter användarens behov och önskningar, just eftersom att kodbasen är fritt tillgänglig att modifiera. SKRIV OM FUNKTIONSNEDSÄTTNINGAR
+
+\subsection{Syfte}
+Syftet med detta praktiska gymnasiearbete är att bygga ett alternativ till de befintliga smarta högtalarna på den kommersiella marknaden. Frågeställningarna är därför: 
+\begin{itemize}
+\item Hur går man till väga för att bygga en smart högtalare med hjälp av öppen källkod?
+\item Hur väl kan en egenbyggd enhet prestera?
+\end{itemize}

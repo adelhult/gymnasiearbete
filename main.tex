@@ -1,0 +1,63 @@
+\documentclass[12pt,a4paper, titlepage]{article}
+\usepackage[margin=3.5cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[swedish, english]{babel}
+\selectlanguage{swedish}
+\usepackage[utf8]{inputenc}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{lipsum}
+\usepackage{minted}
+\usepackage[hidelinks]{hyperref}
+% block=ragged ser till att undvika overflow i referenserna, blir dock betydligt fulare
+\usepackage[style=ieee, block=ragged]{biblatex}
+\usepackage{csquotes}
+\usepackage{pgf-pie}
+\linespread{1.3} % 1 1/2 radavstånd, vet inte om det borde vara kvar
+
+\bibliography{sources}
+\title{En smartare högtalare}
+\author{Eli Adelhult}
+\date{December 2018}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+\selectlanguage{english}
+\begin{abstract}
+\noindent .....Mycroft, Seeeds ReSpeaker 4-mic array microphone and a Raspberry Pi 3 B+ is used.
+\begin{flushleft}
+		{\small {\bf Keywords:} smart speaker, voice user interface, open source, product design}
+\end{flushleft}
+\end{abstract}
+
+\thispagestyle{empty}
+\selectlanguage{swedish}
+\newpage
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+\section{Inledning}
+\input{inledning.tex}
+\section{Metod}
+Skriv kort. 
+* Info från internet
+* måste evaluera befintliga lösningar
+* installationsprocess
+* Konstruktion och design av hölje.
+\section{Material}
+\input{material.tex}
+
+\section{Resultat}
+\input{praktiskt_utforande.tex}
+
+\section{Diskussion}
+Lång text om diskussion fposdk fposdk ofpsdk fpodsf kpsdo fkpodskf posdkf spodkf sopd
+\subsection{Slutsats}
+fsdjfdsp okf opsdkf psd fopkdsopf sdk fopsdk fsdkdopf kdsop
+\section{Kommentar}
+\input{kommentar.tex}
+\newpage
+\addcontentsline{toc}{section}{Referenser} 
+\printbibliography
+\end{document}

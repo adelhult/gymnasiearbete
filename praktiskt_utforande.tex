@@ -1,0 +1,36 @@
+\subsection{Elektronik}
+Skriv om monterandet av komponenterna
+\subsection{Operativsystem och installation}
+För att enklast nyttja Mycroft-tjänsterna på en Raspberry Pi-dator så används Picroft – en fil med operativsystemet Raspbian Stretch Lite färdigpaketerad med Mycroft \cite{picroft}. Äldre versioner av Picroft är dock inte kompatibel med Raspberry Pi modellen 3 B+.  Eftersom datormodellen i fråga är en del av detta projekt bör således den senaste versionen av Picroft (2018-9-12) användas för att mjukvaran ska fungera korrekt. För att faktiskt använda Picroft så hämtas en fil från internet och bränns sedan till ett micro-SD-kort. Minneskortet placeras i enkortsdatorn och enheten kan därefter startas.
+
+Nästa steg i installationsprocessen är att ladda ner och installera drivrutiner till mikrofonen \cite{seeeds_documentation, reaspeker-installation}. Fabrikanten Seeeds egna drivrutiner laddas ner med hjälp av detta kommando:
+\begin{minted}{bash}
+git clone https://github.com/respeaker/seeed-voicecard.git
+\end{minted}
+Därefter installeras drivrutinerna och datorn startas om.
+\begin{minted}{bash}
+cd seeed-voicecard
+sudo ./install.sh 4mic
+sudo shutdown -r now
+\end{minted}
+I enkortsdatorns inbyggda konfigurationsmeny anges hålet för 3.5mm telepluggar som ljudutgång. 
+\begin{minted}{bash}
+sudo raspi-config
+\end{minted}
+Operativsystemet bör nu kunna använda sig utav mikrofonen, Mycroft kan dock ännu inte det. För att få röst-tjänsterna att hitta mikrofonen måste ljudsystemet PulseAudio installeras och enheten startas om. Det sker med följande kommandon:
+\begin{minted}{bash}
+sudo apt-get install pulseaudio
+sudo shutdown -r now
+\end{minted}
+Indikatorn för ljudnivå i Mycrofts användargränssnitt\footnote{Kommandot mycroft-cli-client används för att starta användargränssnittet} visar nu tydligt att mikrofonen fungerar korrekt. Dock kan det uppstå problem med ljudutgången i och med att PulseAudio installerats, det hörs helt enkelt inget ljud från högtalaren. Detta problem beror på ljudnivån har angivits till noll procent. Följande kommando visar alla ljudutgångar, så kallade sinks.
+\begin{minted}{bash}
+pacmd list-sinks
+\end{minted}
+Volymen ändras därefter med detta kommando.
+ \begin{minted}{bash}
+ pactl set-sink-volume <nummer på ljudutgången> 100%
+ \end{minted}
+ För att säkerställa att ljudinställningen bevaras efter omstart så placeras den ovanstående raden kod även i filen SKRIV FILNAMN.
+SKRIV OM INTERNET-FIXEN, ändra setup wizard (eller var det någon annan fil) så att den pingar en vettig ip?
+\subsection{Konstruktion och produktion av höljet}
+Skriv om processen att faktiskt bygga höljet.
