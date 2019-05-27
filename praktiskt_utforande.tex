@@ -1,16 +1,20 @@
 \subsection{Elektronik}
-Skriv om monterandet av komponenterna
+De två högtalarna skruvas isär. Förstärkaren isoleras med koppartejp och löds för att senare anslutas till datorns digitala jord i syfte att motverka störningar. Figur \ref{fig:speaker_before} och \ref{fig:speaker_after} visar högtalarna före och efter modifikationen. Eftersom ljudutgången på Raspberry Pi:n är oåtkomlig från insidan av lådan så löds således ljudkablarna direkt till undersidan av kretskortet. 
+För att senare ansluta alla de elektroniska komponenterna används en flatkabel med 40 pinnar. Kabeln i fråga har tre kontakter, en till mikrofonen, en till förstärkaren och förstås även en till enkortsdatorn.
+
 
 \begin{figure}[H]
     \centering
-    \caption{\small En av högtalarna nedmonterade}
+    \caption{\small En av högtalarna (med förstärkare) nedmonterade}
     \includegraphics[width=12cm]{bilder/speaker_before_change.jpg}
+    \label{fig:speaker_before}
 \end{figure}
-fiokopdfopsd
+
 \begin{figure}[H]
     \centering
     \caption{\small Högtalarna tillsammans med den ombyggda, isolerade förstärkaren.}
     \includegraphics[width=12cm]{bilder/speakers_and_amplifier.jpg}
+    \label{fig:speaker_after}
 \end{figure}
 
 \subsection{Mjukvara}
@@ -32,9 +36,8 @@ I enkortsdatorns inbyggda konfigurationsmeny anges hålet för 3.5mm telepluggar
 \begin{minted}{bash}
 sudo raspi-config
 \end{minted}
-
-För att få operativsystemet och Mycrofts röst-tjänster att korrekt använda sig av mikrofonen måste nu en asymmetrisk ljudenhet skapas i det inbyggda ljudsystemet ALSA. Detta åstadkoms genom att skapa filen \textit{~/.asoundrc} och placera följande rader kod i den:
-\begin{minted}{bash}
+För att få operativsystemet och Mycrofts rösttjänster att korrekt använda sig av mikrofonen måste nu en asymmetrisk ljudenhet skapas i det inbyggda ljudsystemet ALSA. Detta åstadkoms genom att skapa \textit{/.asoundrc} i hemkatalogen och placera följande rader kod i den:
+\begin{minted}{shell}
 pcm.!default {
     type asym
     playback.pcm "hw:0,0"
@@ -42,40 +45,39 @@ pcm.!default {
 }
 \end{minted}
 
-Standardinställningarna som är angivna i den befintliga konfigurationsfilen \textit{/etc/asound.conf} måste även bytas ut till samma rader kod. Därefter startas datorn om. Efter omstart bör indikatorn för ljudnivå i Mycrofts användargränssnitt\footnote{Kommandot mycroft-cli-client används för att starta användargränssnittet} nu visa att mikrofonen fungerar korrekt. 
-\\
-SKRIV OM INTERNET-FIXEN, ändra setup wizard (eller var det någon annan fil) så att den pingar en vettig ip?
-\\
-Raspberry Pi-datorn har en röd lysdiod som lyser när strömmen är ansluten, detta stör rent estetiskt då det röda skenet kommer synas genom plasthöljet. Vi stänger av den genom att lägga till följande rad kod i filen \textit{/etc/rc.loca}l ovanför {\mintinline{latex}{exit 0}}: 
+\noindent Standardinställningarna som är angivna i den befintliga filen \textit{/etc/asound.conf} måste även bytas ut till samma rader kod. Därefter startas datorn om. Efter omstart bör indikatorn för ljudnivå i Mycrofts användargränssnitt\footnote{Kommandot mycroft-cli-client används för att starta användargränssnittet} nu visa att mikrofonen fungerar korrekt. 
+
+Nu kvarstår enbart två mindre modifikationer för att all mjukvara ska fungera som önskat. Raspberry Pi-datorn har en röd lysdiod som lyser när strömmen är ansluten, detta stör rent estetiskt då det röda skenet kommer synas genom plasthöljet. Lysdioden stängs av genom att lägga till följande rad kod i filen \textit{/etc/rc.loca}l ovanför {\mintinline{shell}{exit 0}}:
 \begin{minted}{bash}
 sudo sh -c "echo none > /sys/class/leds/led1/trigger"
 \end{minted}
+Vid varje uppstart meddelar Mycroft också att enheten saknar en internetanslutning trots att det finns en sådan. Problemet åtgärdas genom att modifiera {\mintinline{shell}{auto_run.sh}}. Som koden ursprungligen ser ut så försöker funktionen {\mintinline{shell}{network_setup()}} kommunicera med en viss IP-adress men misslyckas eftersom den inte får något svar från en enhet med den adressen. Genom att ersätta den angivna IP-adressen med datorns lokala adress (127.0.0.1) kommer Mycroft alltid utgå från att en nätverks\-anslutning finns. En bättre implementation är dock att istället ange adressen till en eller flera andra datorer som man vet finns i nätverket. Koden nedan visar hur den modiferade delen av filen ser ut efter åtgärden.
+\inputminted{shell}{auto_run.txt}
 
-\subsection{Hölje och ihopmontering av enheten}
-Höljet till den smarta högtalaren ritas i CAD-programmet Autodesk Inventor 2019. Höljet består av två delar, se figur \ref{fig:top-3d} och \ref{fig:bottom-3d}. I den nedre delen av högtalaren finns det skruvhål för att fästa enkortsdatorn och även hål dedikerade till ström, nätverks- och USB-ingångarna så att de alltid ska vara åtkomliga. Den övre delen av höljet har skruvhål för att fästa mikrofonkortet men även hål på sidan där högtalarna skall placeras. 
+\subsection{Hölje och montering av komponenterna}
+Höljet till den smarta högtalaren ritas i CAD-programmet Autodesk Inventor 2019. Den består av två delar, se figur \ref{fig:top-3d} och \ref{fig:bottom-3d}. I den nedre delen av högtalaren finns det skruvhål för att fästa enkortsdatorn och även hål dedikerade till ström, nätverks- och USB-ingångarna så att de alltid ska vara åtkomliga. Den övre delen av höljet har också plats för utgångarna men även skruvhål för att fästa mikrofonkortet och hål på sidan där högtalarna skall placeras. 
 \begin{figure}[H]
     \centering
     \caption{\small Rendering av den övre halvan av höljet.}
-    \includegraphics[width=9cm]{bilder/top_red.png}
-    \label{fig:top-3d} 
+    \includegraphics[width=9cm]{bilder/top_transparent.png}
+    \label{fig:top-3d}
 \end{figure}
-
 \begin{figure}[H]
     \centering
     \caption{\small Rendering av den nedre halvan av höljet.}
-    \includegraphics[width=9cm]{bilder/bottom_red.png}
+    \includegraphics[width=8cm]{bilder/bottom_transparent.png}
     \label{fig:bottom-3d} 
 \end{figure}
 
-Efter de digitala 3D-filerna till höljet är färdigställda så produceras de två bitarna i 3D-skrivaren Ultimaker 3 med PLA-plast, i detta fallet röd sådan från skrivar\-tillverkaren själv. Det är även värt att notera att delarna är designade för att inte behövs några stödben när de skrivs ut.
+Efter att de digitala 3D-filerna till höljet är färdigställda så produceras de två bitarna i 3D-skrivaren Ultimaker 3 med PLA-plast, i detta fallet röd sådan från skrivar\-tillverkaren själv. Det är även värt att notera att delarna är designade för att inte behöva några stödben när de skrivs ut.
 
-När de båda delarna är utskrivna kan alla komponenter monteras i höljet. Mikrofonkortet och enkortsdatorn skruvas fast och ansluts till varandra med en flatkabel som även försörjer förstärkaren med ström. Högtalarna limmas fast på insidan, när dessa sitter fast kan slutligen höljets två delar skruvas samman och plastben klistras fast på undersidan.
+När de båda delarna är utskrivna kan alla komponenter monteras i höljet. Mikrofon\-kortet och enkortsdatorn skruvas fast och ansluts till varandra med en flatkabel som även försörjer förstärkaren med ström. Högtalarna limmas fast på insidan, när dessa sitter fast kan slutligen höljets två delar skruvas samman och plastfötter klistras fast på undersidan.
 
 
 \begin{figure}[H]
     \centering
     \caption{\small Bild av den färdiga prototypen.}
-    \includegraphics[width=14cm]{bilder/finale_unit_small.jpg}
-    \label{fig:finale_unit} 
+    \includegraphics[width=14cm]{bilder/final_unit_small.jpg}
+    \label{fig:final_unit} 
 \end{figure}
 
